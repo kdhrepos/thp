@@ -1,10 +1,12 @@
 
-CC=gcc
+CC = gcc
 
-PROG=thp
+APPS = thp thp_malloc
 
-default:
-	$(CC) -o $(PROG) $(PROG).c
+all: $(APPS)
+
+%: %.c
+	$(CC) -o $@ $<
 
 run:
-	./$(PROG)
+	./$(APPS)

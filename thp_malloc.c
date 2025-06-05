@@ -11,19 +11,12 @@ int main(int argc, char ** argv) {
     char cmd[30];
     pid_t pid = getpid();
 	
-    int nr_huge_page; // number of huge pages
-
-    if (argc < 2) {
-	fprintf(stderr, "no args\n");
-	return 1;
-    }
-
-    nr_huge_page = atoi(argv[1]);
-
-    size_t size = nr_huge_page * HPAGE_SIZE;
+    size_t size = 32 * HPAGE_SIZE;
     
-    void *mem = mmap(NULL, size, PROT_READ | PROT_WRITE,
-                     MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+//    void *mem = mmap(NULL, size, PROT_READ | PROT_WRITE,
+//                     MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+
+    void *mem = malloc(size);
 
     if (mem == MAP_FAILED) {
         perror("mmap");
