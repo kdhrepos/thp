@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <stdlib.h>
+#include <inttypes.h>
 
 #define HPAGE_SIZE (2 * 1024 * 1024)
 
@@ -32,14 +33,21 @@ int main(int argc, char ** argv) {
 
     madvise(mem, size, MADV_HUGEPAGE);
 
-    memset(mem, 0, size);
+    memset(mem, 1, size);
 
     printf("Allocated %zu bytes at %p\n", size, mem);
-    
+    printf("Huge page need to be allocated: %d\n", 2048 * nr_huge_page);
+
     // print how pages are allocated
     sprintf(cmd, "cat /proc/%d/smaps_rollup", pid);
     system(cmd);
 
+    if (((uintptr_t)mem % HPAGE_SIZE) == 0) {
+    	printf("mem (%p) is aligned to 2MB\n", mem);
+    } else {
+    	printf("mem (%p) is NOT aligned to 2MB\n", mem);
+    }
+    
     munmap(mem, size);
     return 0;
 }
